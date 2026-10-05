@@ -1,9 +1,16 @@
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 
+import SEO from '../components/SEO';
+
 export default function Privacy() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Privacy Policy"
+                description="Read the Zameengar Privacy Policy to understand how we collect, use, and protect your data."
+                url="https://zameengar.com/privacy"
+            />
             <Header />
             <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
                 <h1 className="text-4xl font-bold text-gray-900 mb-3">Privacy Policy</h1>

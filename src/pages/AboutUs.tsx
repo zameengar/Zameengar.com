@@ -1,9 +1,16 @@
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 
+import SEO from '../components/SEO';
+
 export default function AboutUs() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="About Us"
+                description="Learn about Zameengar, Pakistan's trusted real estate marketplace connecting buyers and sellers."
+                url="https://zameengar.com/about"
+            />
             <Header />
             <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
                 <h1 className="text-4xl font-bold text-gray-900 mb-8">About Zameengar</h1>

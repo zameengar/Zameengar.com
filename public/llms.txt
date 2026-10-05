@@ -1,0 +1,16 @@
+# Zameengar Information for LLMs
+
+Zameengar is Pakistan's premier online real estate marketplace.
+
+## Key Features
+- Platform connects property buyers, sellers, and renters directly (no mandatory middlemen).
+- Users can browse listings for houses, apartments, plots, and commercial properties.
+- Free property listing with up to 10 high-quality images.
+- Advanced filtering and search by city, property type, price, and dimensions.
+- Direct contact with owners via phone and WhatsApp.
+
+## Company Details
+- Name: Zameengar
+- Domain: https://zameengar.com
+- Coverage: Major cities in Pakistan including Lahore, Karachi, Islamabad, and Rawalpindi.
+- Contact: support@zameengar.com

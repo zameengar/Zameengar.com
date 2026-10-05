@@ -3,9 +3,16 @@ import { Footer } from '../components/layout/Footer';
 import { Button } from '../components/ui/button';
 import { Link } from 'react-router-dom';
 
+import SEO from '../components/SEO';
+
 export default function Advertise() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Advertise"
+                description="Advertise your real estate agency or project with Zameengar and reach thousands of buyers across Pakistan."
+                url="https://zameengar.com/advertise"
+            />
             <Header />
             <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
                 <h1 className="text-4xl font-bold text-gray-900 mb-3">Advertise with Us</h1>

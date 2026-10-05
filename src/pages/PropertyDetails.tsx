@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { MapPin, Home as HomeIcon, CheckCircle2, Flag, CheckSquare, XSquare, Heart, Edit, Trash, Phone, MessageCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import SEO from '../components/SEO';
 
 export default function PropertyDetails() {
     const { id } = useParams();
@@ -172,6 +173,12 @@ export default function PropertyDetails() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title={property.title || 'Property Details'}
+                description={property.description ? property.description.substring(0, 150) + "..." : "View this amazing property for sale/rent on Zameengar."}
+                url={`https://zameengar.com/properties/${property.id}`}
+                image={primaryImage || undefined}
+            />
             <Header />
 
             <main className="max-w-7xl mx-auto px-4 w-full py-8">
@@ -233,7 +240,7 @@ export default function PropertyDetails() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                         <div className="md:col-span-2 h-96 bg-gray-200 rounded-lg overflow-hidden relative">
                             {primaryImage ? (
-                                <img src={primaryImage} alt="Property" className="w-full h-full object-cover" />
+                                <img src={primaryImage} alt={`${property.title} - Main Image`} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
                             )}
@@ -246,7 +253,7 @@ export default function PropertyDetails() {
                         <div className="hidden md:flex flex-col gap-4">
                             {secondaryImages.length > 0 ? secondaryImages.map((img, i) => (
                                 <div key={i} className="flex-1 bg-gray-200 rounded-lg overflow-hidden">
-                                    <img src={img.image_url} alt="Property side" className="w-full h-full object-cover" />
+                                    <img src={img.image_url} alt={`${property.title} - Image ${i + 2}`} className="w-full h-full object-cover" />
                                 </div>
                             )) : (
                                 <>

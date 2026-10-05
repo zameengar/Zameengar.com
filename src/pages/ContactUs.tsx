@@ -3,6 +3,8 @@ import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { Button } from '../components/ui/button';
 
+import SEO from '../components/SEO';
+
 export default function ContactUs() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -21,6 +23,11 @@ export default function ContactUs() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Contact Us"
+                description="Get in touch with the Zameengar support team for any real estate inquiries, feedback, or assistance."
+                url="https://zameengar.com/contact"
+            />
             <Header />
             <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
                 <h1 className="text-4xl font-bold text-gray-900 mb-8">Contact Us</h1>

@@ -6,6 +6,8 @@ import { Button } from '../components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
+import SEO from '../components/SEO';
+
 export default function Home() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
@@ -57,6 +59,11 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Home"
+                description="Zameengar is Pakistan's trusted real estate marketplace to buy, rent, and sell properties. Discover houses, apartments, and commercial spaces."
+                url="https://zameengar.com/"
+            />
             <Header />
 
             {/* Hero Section */}

@@ -5,6 +5,8 @@ import { Button } from '../components/ui/button';
 import { Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
+import SEO from '../components/SEO';
+
 export default function Properties() {
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -90,6 +92,11 @@ export default function Properties() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Properties"
+                description="Browse thousands of properties for sale and rent across Pakistan on Zameengar."
+                url="https://zameengar.com/properties"
+            />
             <Header />
             <div className="max-w-7xl mx-auto px-4 w-full py-8 flex flex-col md:flex-row gap-6">
                 {/* Filters Sidebar */}

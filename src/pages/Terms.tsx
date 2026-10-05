@@ -1,9 +1,16 @@
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 
+import SEO from '../components/SEO';
+
 export default function Terms() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+            <SEO
+                title="Terms and Conditions"
+                description="Read the Zameengar Terms and Conditions to understand the rules and regulations for using our platform."
+                url="https://zameengar.com/terms"
+            />
             <Header />
             <main className="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
                 <h1 className="text-4xl font-bold text-gray-900 mb-3">Terms and Conditions</h1>
