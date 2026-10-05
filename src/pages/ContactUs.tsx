@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { Button } from '../components/ui/button';
@@ -9,26 +10,9 @@ export default function ContactUs() {
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
-    const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (message.trim().length < 15) {
-            alert("Please provide a more detailed message (minimum 15 characters).");
-            return;
-        }
-
-        const form = e.currentTarget;
-        const formData = new FormData(form);
-
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(formData as any).toString(),
-        })
-            .then(() => setSubmitted(true))
-            .catch((error) => alert(error));
-    };
+    const location = useLocation();
+    const submitted = new URLSearchParams(location.search).get('success') === 'true';
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -51,7 +35,7 @@ export default function ContactUs() {
                             <p className="text-green-700 text-sm">Thank you for reaching out. Our team will get back to you within 24-48 hours.</p>
                         </div>
                     ) : (
-                        <form className="space-y-4" onSubmit={handleSubmit} name="contact" data-netlify="true">
+                        <form name="contact" method="POST" action="/contact?success=true" data-netlify="true" className="space-y-4">
                             <input type="hidden" name="form-name" value="contact" />
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -67,7 +51,7 @@ export default function ContactUs() {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                                <textarea name="message" value={message} onChange={e => setMessage(e.target.value)} rows={5} required className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-green-500" placeholder="Tell us how we can help..."></textarea>
+                                <textarea name="message" value={message} onChange={e => setMessage(e.target.value)} rows={5} minLength={15} required className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-green-500" placeholder="Tell us how we can help..."></textarea>
                             </div>
                             <Button type="submit" className="w-full bg-green-700 hover:bg-green-800">Send Message</Button>
                         </form>
