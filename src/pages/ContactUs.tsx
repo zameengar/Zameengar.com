@@ -35,7 +35,7 @@ export default function ContactUs() {
                             <p className="text-green-700 text-sm">Thank you for reaching out. Our team will get back to you within 24-48 hours.</p>
                         </div>
                     ) : (
-                        <form name="contact" method="POST" action="/contact?success=true" data-netlify="true" className="space-y-4">
+                        <form name="contact" method="POST" action="/success.html" data-netlify="true" className="space-y-4">
                             <input type="hidden" name="form-name" value="contact" />
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
