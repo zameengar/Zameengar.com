@@ -29,7 +29,7 @@ export const Footer = () => {
                     <div>
                         <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4">Contact</h4>
                         <ul className="space-y-2 text-sm">
-                            <li><a href="mailto:support@zameengar.com" className="hover:text-green-400 transition">support@zameengar.com</a></li>
+                            <li><Link to="/contact" className="hover:text-green-400 transition">Contact Support</Link></li>
                         </ul>
                     </div>
                 </div>

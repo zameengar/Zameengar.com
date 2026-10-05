@@ -1,5 +1,6 @@
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
+import { Link } from 'react-router-dom';
 
 import SEO from '../components/SEO';
 
@@ -71,7 +72,7 @@ export default function Terms() {
 
                     <section>
                         <h2 className="text-xl font-bold text-gray-900 mb-2">10. Contact</h2>
-                        <p>If you have any questions about these Terms and Conditions, please contact us at <a href="mailto:support@zameengar.com" className="text-green-700 hover:underline">support@zameengar.com</a>.</p>
+                        <p>If you have any questions about these Terms and Conditions, please <Link to="/contact" className="text-green-700 hover:underline">contact us here</Link>.</p>
                     </section>
                 </div>
             </main>

@@ -13,4 +13,4 @@ Zameengar is Pakistan's premier online real estate marketplace.
 - Name: Zameengar
 - Domain: https://zameengar.com
 - Coverage: Major cities in Pakistan including Lahore, Karachi, Islamabad, and Rawalpindi.
-- Contact: support@zameengar.com
+- Contact: https://zameengar.com/contact
