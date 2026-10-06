@@ -19,7 +19,7 @@ export default function AdminProperties() {
         setLoading(true);
         let query = supabase
             .from('properties')
-            .select(`*, owner:profiles!properties_owner_id_fkey(full_name, email)`)
+            .select(`*, owner:profiles (full_name, email)`)
             .order('created_at', { ascending: false });
 
         if (filter !== 'all') {
@@ -31,7 +31,11 @@ export default function AdminProperties() {
         }
 
         const { data, error } = await query;
-        if (!error && data) setProperties(data);
+        if (error) {
+            console.error('Admin fetch properties error:', error);
+            alert('Error fetching properties: ' + error.message);
+        }
+        if (data) setProperties(data);
         setLoading(false);
     };
 

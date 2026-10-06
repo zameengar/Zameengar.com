@@ -24,6 +24,9 @@ export default function MyProperties() {
             .eq('owner_id', profile?.id)
             .order('created_at', { ascending: false });
 
+        if (error) {
+            console.error('MyProperties fetch error:', error);
+        }
         if (!error && data) {
             setProperties(data);
         }
@@ -77,7 +80,7 @@ export default function MyProperties() {
                                     <td className="p-4">PKR {item.price.toLocaleString()}</td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${item.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                                item.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+                                            item.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
                                             }`}>
                                             {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                                         </span>

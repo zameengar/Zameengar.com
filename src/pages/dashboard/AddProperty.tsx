@@ -121,7 +121,8 @@ export default function AddProperty() {
         }).select().single();
 
         if (propertyError || !propertyData) {
-            alert("Error saving property: " + (propertyError?.message || 'Unknown'));
+            console.error("Property insert error:", propertyError);
+            alert("Error saving property: " + (propertyError?.message || 'Unknown error') + "\n\nHint: " + (propertyError?.hint || propertyError?.details || 'Check Supabase RLS policies and column names.'));
             setLoading(false);
             return;
         }
