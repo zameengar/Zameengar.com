@@ -78,12 +78,16 @@ export default function AddProperty() {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
-            if (files.length > 10) {
+            if (images.length + files.length > 10) {
                 alert('You can only upload a maximum of 10 pictures per property.');
                 return;
             }
-            setImages(files);
+            setImages(prev => [...prev, ...files]);
         }
+    };
+
+    const removeImage = (index: number) => {
+        setImages(images.filter((_, i) => i !== index));
     };
 
     const toggleFeature = (feature: string) => {
@@ -393,18 +397,38 @@ export default function AddProperty() {
 
                         <div className="border-t pt-6">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Upload Property Images (Max 10)</label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 flex flex-col items-center justify-center">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    onChange={handleImageChange}
-                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-                                />
-                                {images.length > 0 && (
-                                    <p className="mt-2 text-sm text-gray-600 font-medium">Selected {images.length} images.</p>
-                                )}
-                            </div>
+
+                            {images.length > 0 && (
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                    {images.map((file, idx) => (
+                                        <div key={idx} className="relative group rounded-lg overflow-hidden border shadow-sm h-32 bg-gray-100">
+                                            <img src={URL.createObjectURL(file)} alt="Upload preview" className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <button type="button" onClick={() => removeImage(idx)} className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {images.length < 10 && (
+                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 flex flex-col items-center justify-center">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImageChange}
+                                        className="hidden"
+                                        id="image-upload-new"
+                                    />
+                                    <label htmlFor="image-upload-new" className="flex flex-col items-center cursor-pointer text-gray-500 hover:text-green-700 transition w-full">
+                                        <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                        <span className="font-medium text-sm text-center">Click to add images (Limit: {10 - images.length} remaining)</span>
+                                    </label>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex gap-4 pt-4">
