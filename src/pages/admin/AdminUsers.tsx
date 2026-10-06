@@ -60,9 +60,8 @@ export default function AdminUsers() {
                     <table className="w-full text-left text-sm text-gray-600">
                         <thead className="bg-gray-100 text-gray-900 border-b">
                             <tr>
-                                <th className="p-4 font-semibold">Role</th>
-                                <th className="p-4 font-semibold">Account Type</th>
-                                <th className="p-4 font-semibold">Status</th>
+                                <th className="p-4 font-semibold">Name</th>
+                                <th className="p-4 font-semibold">Email</th>
                                 <th className="p-4 font-semibold">Role</th>
                                 <th className="p-4 font-semibold">Account Type</th>
                                 <th className="p-4 font-semibold">Status</th>

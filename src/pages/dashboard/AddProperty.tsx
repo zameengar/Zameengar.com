@@ -33,6 +33,7 @@ export default function AddProperty() {
     const [uploadStatus, setUploadStatus] = useState('');
 
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+    const [customFeature, setCustomFeature] = useState('');
 
     // Available Features
     const COMMON_FEATURES = [
@@ -90,6 +91,14 @@ export default function AddProperty() {
             setSelectedFeatures(selectedFeatures.filter(f => f !== feature));
         } else {
             setSelectedFeatures([...selectedFeatures, feature]);
+        }
+    };
+
+    const handleAddCustomFeature = () => {
+        const feat = customFeature.trim();
+        if (feat && !selectedFeatures.includes(feat)) {
+            setSelectedFeatures([...selectedFeatures, feat]);
+            setCustomFeature('');
         }
     };
 
@@ -330,22 +339,55 @@ export default function AddProperty() {
                         )}
 
                         <div className="border-t pt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-3">Property Features (Optional)</label>
-                            <div className="flex flex-wrap gap-2">
-                                {COMMON_FEATURES.map(feature => (
-                                    <button
-                                        key={feature}
-                                        type="button"
-                                        onClick={() => toggleFeature(feature)}
-                                        className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${selectedFeatures.includes(feature)
-                                            ? 'bg-green-100 text-green-800 border-green-200'
-                                            : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        {selectedFeatures.includes(feature) && '✓ '}
-                                        {feature}
-                                    </button>
-                                ))}
+                            <label className="block text-sm font-medium text-gray-700 mb-3">Property Features</label>
+
+                            <div className="mb-4">
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Common Features</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {COMMON_FEATURES.map(feature => (
+                                        <button
+                                            key={feature}
+                                            type="button"
+                                            onClick={() => toggleFeature(feature)}
+                                            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${selectedFeatures.includes(feature)
+                                                ? 'bg-green-100 text-green-800 border-green-200'
+                                                : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {selectedFeatures.includes(feature) && '✓ '}
+                                            {feature}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Selected Custom Features</label>
+                                {selectedFeatures.filter(f => !COMMON_FEATURES.includes(f)).length > 0 && (
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {selectedFeatures.filter(f => !COMMON_FEATURES.includes(f)).map(feature => (
+                                            <button
+                                                key={feature}
+                                                type="button"
+                                                onClick={() => toggleFeature(feature)}
+                                                className="px-3 py-1.5 rounded-full text-sm font-medium border transition-colors bg-green-100 text-green-800 border-green-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 group"
+                                            >
+                                                {feature} <span className="ml-1 opacity-50 group-hover:opacity-100">×</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={customFeature}
+                                        onChange={e => setCustomFeature(e.target.value)}
+                                        onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), handleAddCustomFeature())}
+                                        placeholder="Add custom feature (e.g. Lawn, Pool)"
+                                        className="flex-1 p-2 border rounded-lg focus:ring-green-500 outline-none text-sm"
+                                    />
+                                    <Button type="button" onClick={handleAddCustomFeature} className="bg-slate-800 hover:bg-slate-900 text-sm py-2">Add Feature</Button>
+                                </div>
                             </div>
                         </div>
 
