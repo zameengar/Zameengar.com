@@ -136,10 +136,13 @@ export default function EditProperty() {
         // 3. Process Image Deletions
         for (const imgId of imagesToDelete) {
             const img = existingImages.find(i => i.id === imgId);
-            if (img && img.image_url) {
+            if (img) {
+                // Try to remove from storage using stored path or extracted path
                 try {
-                    const path = img.image_url.split('/property-images/')[1];
-                    if (path) await supabase.storage.from('property-images').remove([path]);
+                    const storagePath = img.storage_path || img.image_url?.split('/property-images/').pop();
+                    if (storagePath) {
+                        await supabase.storage.from('property-images').remove([decodeURIComponent(storagePath)]);
+                    }
                 } catch (e) {
                     console.error("Storage delete fail:", e);
                 }
@@ -148,17 +151,41 @@ export default function EditProperty() {
         }
 
         // 4. Upload New Images
+        let editUploadErrors: string[] = [];
         for (let i = 0; i < newImages.length; i++) {
             const file = newImages[i];
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random()}.${fileExt}`;
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
             const filePath = `${id}/${fileName}`;
-            const { error: uploadError } = await supabase.storage.from('property-images').upload(filePath, file);
 
-            if (!uploadError) {
-                const { data: { publicUrl } } = supabase.storage.from('property-images').getPublicUrl(filePath);
-                await supabase.from('property_images').insert({ property_id: id, image_url: publicUrl, sort_order: 99 });
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('property-images')
+                .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+            if (uploadError) {
+                console.error(`Edit image ${i + 1} upload failed:`, uploadError);
+                editUploadErrors.push(`Image ${i + 1}: ${uploadError.message}`);
+                continue;
             }
+
+            if (uploadData) {
+                const { data: { publicUrl } } = supabase.storage.from('property-images').getPublicUrl(uploadData.path);
+                const { error: insertError } = await supabase.from('property_images').insert({
+                    property_id: id,
+                    image_url: publicUrl,
+                    storage_path: uploadData.path,
+                    is_primary: false,
+                    sort_order: 99 + i
+                });
+                if (insertError) {
+                    console.error(`Edit image ${i + 1} DB insert failed:`, insertError);
+                    editUploadErrors.push(`Image ${i + 1} record: ${insertError.message}`);
+                }
+            }
+        }
+
+        if (editUploadErrors.length > 0) {
+            alert('Property updated, but some new images failed:\\n' + editUploadErrors.join('\\n'));
         }
 
         setSaving(false);
