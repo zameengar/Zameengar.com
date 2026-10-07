@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Header } from '../components/layout/Header';
 import { Button } from '../components/ui/button';
-import { MapPin, Home as HomeIcon, CheckCircle2, Flag, CheckSquare, XSquare, Heart, Edit, Trash, Phone, MessageCircle } from 'lucide-react';
+import { MapPin, Home as HomeIcon, CheckCircle2, Flag, CheckSquare, XSquare, Heart, Edit, Trash, Phone, MessageCircle, X, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
@@ -14,6 +14,7 @@ export default function PropertyDetails() {
 
     const [property, setProperty] = useState<any>(null);
     const [images, setImages] = useState<any[]>([]);
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
     const [owner, setOwner] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -237,8 +238,11 @@ export default function PropertyDetails() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div className="md:col-span-2 h-96 bg-gray-200 rounded-lg overflow-hidden relative">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 mb-8">
+                        <div
+                            className="md:col-span-2 h-64 md:h-96 bg-gray-200 rounded-lg overflow-hidden relative cursor-pointer hover:opacity-95 transition"
+                            onClick={() => setSelectedImageIndex(0)}
+                        >
                             {primaryImage ? (
                                 <img src={primaryImage} alt={`${property.title} - Main Image`} className="w-full h-full object-cover" />
                             ) : (
@@ -249,18 +253,49 @@ export default function PropertyDetails() {
                                     Status: {property.status.toUpperCase()}
                                 </div>
                             )}
-                        </div>
-                        <div className="hidden md:flex flex-col gap-4">
-                            {secondaryImages.length > 0 ? secondaryImages.map((img, i) => (
-                                <div key={i} className="flex-1 bg-gray-200 rounded-lg overflow-hidden">
-                                    <img src={img.image_url} alt={`${property.title} - Image ${i + 2}`} className="w-full h-full object-cover" />
+                            {images.length > 0 && (
+                                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium backdrop-blur-sm">
+                                    <ImageIcon className="w-5 h-5" />
+                                    1 / {images.length}
                                 </div>
-                            )) : (
-                                <>
-                                    <div className="flex-1 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
-                                    <div className="flex-1 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
-                                </>
                             )}
+                        </div>
+
+                        {secondaryImages.length > 0 ? (
+                            <div className="hidden md:flex flex-col gap-4">
+                                {secondaryImages.map((img, i) => (
+                                    <div
+                                        key={i}
+                                        onClick={() => setSelectedImageIndex(i + 1)}
+                                        className="flex-1 bg-gray-200 rounded-lg overflow-hidden relative cursor-pointer hover:opacity-95 transition group"
+                                    >
+                                        <img src={img.image_url} alt={`${property.title} - Image ${i + 2}`} className="w-full h-full object-cover" />
+                                        {(i === 1 && images.length > 3) && (
+                                            <div className="absolute inset-0 bg-black/50 hover:bg-black/40 transition flex items-center justify-center text-white font-bold text-lg">
+                                                +{images.length - 3} Photos
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="hidden md:flex flex-col gap-4">
+                                <div className="flex-1 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                                <div className="flex-1 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                            </div>
+                        )}
+
+                        {/* Mobile Grid for Secondary Images */}
+                        <div className="flex md:hidden gap-2 overflow-x-auto pb-2 snap-x">
+                            {images.slice(1).map((img, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => setSelectedImageIndex(i + 1)}
+                                    className="w-32 min-w-32 h-24 bg-gray-200 rounded-lg overflow-hidden shrink-0 snap-start cursor-pointer"
+                                >
+                                    <img src={img.image_url} alt={`Gallery ${i}`} className="w-full h-full object-cover" />
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -435,6 +470,54 @@ export default function PropertyDetails() {
                     </div>
                 )}
             </main>
+            {/* Lightbox Modal */}
+            {selectedImageIndex !== null && (
+                <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">
+                    <button
+                        className="absolute top-6 right-6 text-gray-300 hover:text-white bg-black/30 hover:bg-white/20 rounded-full p-2 transition z-50"
+                        onClick={() => setSelectedImageIndex(null)}
+                    >
+                        <X className="w-8 h-8" />
+                    </button>
+
+                    {images.length > 1 && (
+                        <button
+                            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-white/30 rounded-full p-3 transition z-50"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedImageIndex(prev => prev === null || prev === 0 ? images.length - 1 : prev - 1);
+                            }}
+                        >
+                            <ChevronLeft className="w-8 h-8" />
+                        </button>
+                    )}
+
+                    <div className="w-full max-w-6xl max-h-[85vh] px-4 md:px-24 flex items-center justify-center" onClick={() => setSelectedImageIndex(null)}>
+                        <img
+                            src={images[selectedImageIndex].image_url}
+                            alt="Property Gallery Image"
+                            className="max-w-full max-h-[85vh] object-contain select-none"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+
+                    {images.length > 1 && (
+                        <button
+                            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-white/30 rounded-full p-3 transition z-50"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedImageIndex(prev => prev === null || prev === images.length - 1 ? 0 : prev + 1);
+                            }}
+                        >
+                            <ChevronRight className="w-8 h-8" />
+                        </button>
+                    )}
+
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white font-medium bg-black/50 px-4 py-2 rounded-full">
+                        {selectedImageIndex + 1} / {images.length}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

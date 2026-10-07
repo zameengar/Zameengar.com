@@ -16,6 +16,7 @@ export default function EditProperty() {
     const [propertyType, setPropertyType] = useState('House');
     const [city, setCity] = useState('');
     const [price, setPrice] = useState('');
+    const [listedByType, setListedByType] = useState('owner');
     const [areaValue, setAreaValue] = useState('');
     const [areaUnit, setAreaUnit] = useState('Marla');
     const [bedrooms, setBedrooms] = useState('0');
@@ -53,6 +54,7 @@ export default function EditProperty() {
             setPrice(data.price.toString());
             setAreaValue(data.area_value.toString());
             setAreaUnit(data.area_unit);
+            setListedByType(data.listed_by_type || 'owner');
             setBedrooms((data.bedrooms || 0).toString());
             setBathrooms((data.bathrooms || 0).toString());
 
@@ -113,6 +115,7 @@ export default function EditProperty() {
             price: parseFloat(price),
             purpose,
             property_type: propertyType,
+            listed_by_type: listedByType,
             city,
             area_value: parseFloat(areaValue || '0'),
             area_unit: areaUnit,
@@ -235,9 +238,19 @@ export default function EditProperty() {
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                            <input value={city} onChange={e => setCity(e.target.value)} type="text" className="w-full p-3 border rounded-lg outline-none" required />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Listed By Type</label>
+                                <select value={listedByType} onChange={e => setListedByType(e.target.value)} className="w-full p-3 border rounded-lg bg-white">
+                                    <option value="owner">Owner / Individual</option>
+                                    <option value="dealer">Real Estate Dealer</option>
+                                    <option value="agency">Real Estate Agency</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input value={city} onChange={e => setCity(e.target.value)} type="text" className="w-full p-3 border rounded-lg outline-none" required />
+                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Price (PKR)</label>

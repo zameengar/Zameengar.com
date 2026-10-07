@@ -1,1 +1,10 @@
+# Force explicit canonical domain
+http://www.zameengar.com/*  https://zameengar.com/:splat 301!
+http://zameengar.com/*      https://zameengar.com/:splat 301!
+https://www.zameengar.com/* https://zameengar.com/:splat 301!
+
+# Redirect old cPanel default pages to root to solve Soft 404 errors
+/cgi-sys/*  /  301!
+
+# Allow React Router to handle all other application routing
 /*    /index.html   200
