@@ -15,6 +15,8 @@ import ContactUs from './pages/ContactUs';
 import Advertise from './pages/Advertise';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import DashboardOverview from './pages/dashboard/DashboardOverview';
 import AddProperty from './pages/dashboard/AddProperty';
 import EditProperty from './pages/dashboard/EditProperty';
@@ -45,6 +47,8 @@ function App() {
           <Route path="/advertise" element={<Advertise />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           {/* Guest-Only Authentication Routes (Redirect to dashboard if logged in) */}
           <Route element={<PublicLayout />}>

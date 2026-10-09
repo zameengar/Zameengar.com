@@ -20,6 +20,7 @@ export const Header = () => {
                         <Link to="/properties?purpose=buy" className="text-gray-700 font-medium hover:text-green-700 transition">Buy</Link>
                         <Link to="/properties?purpose=rent" className="text-gray-700 font-medium hover:text-green-700 transition">Rent</Link>
                         <Link to="/properties" className="text-gray-700 font-medium hover:text-green-700 transition">Properties</Link>
+                        <Link to="/blog" className="text-gray-700 font-medium hover:text-green-700 transition">Blog</Link>
                     </nav>
                     <div className="hidden md:flex items-center gap-4">
                         <Link to="/dashboard/add-property">
@@ -56,6 +57,7 @@ export const Header = () => {
                         <Link to="/properties?purpose=buy" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-green-700 transition px-2 py-1">Buy</Link>
                         <Link to="/properties?purpose=rent" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-green-700 transition px-2 py-1">Rent</Link>
                         <Link to="/properties" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-green-700 transition px-2 py-1">All Properties</Link>
+                        <Link to="/blog" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-green-700 transition px-2 py-1">Blog</Link>
                         <div className="border-t border-gray-100 my-2 pt-2"></div>
                         <Link to="/dashboard/add-property" onClick={() => setMobileMenuOpen(false)} className="px-2">
                             <Button variant="outline" className="w-full justify-center border-green-600 text-green-700 hover:bg-green-50 mb-2">Post Property</Button>
