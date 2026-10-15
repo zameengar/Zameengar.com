@@ -27,6 +27,7 @@ export default function Properties() {
     const [minArea, setMinArea] = useState('');
     const [maxArea, setMaxArea] = useState('');
     const [sort, setSort] = useState('newest');
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
 
     useEffect(() => {
         // Read URL changes to sync state when navigating from Home
@@ -98,10 +99,37 @@ export default function Properties() {
                 url="https://zameengar.com/properties"
             />
             <Header />
-            <div className="max-w-7xl mx-auto px-4 w-full py-8 flex flex-col md:flex-row gap-6">
+            <div className="max-w-7xl mx-auto px-4 w-full py-6 md:py-8 flex flex-col md:flex-row gap-6">
+                {/* Mobile Filter Toggle Button */}
+                <div className="md:hidden flex items-center justify-between bg-white p-4 rounded-xl border shadow-sm">
+                    <div>
+                        <div className="font-bold text-gray-900">{properties.length} Properties Found</div>
+                        <div className="text-xs text-gray-500">Filter by location, price, rooms</div>
+                    </div>
+                    <Button
+                        type="button"
+                        onClick={() => setShowMobileFilters(!showMobileFilters)}
+                        variant="outline"
+                        className="border-green-600 text-green-700 hover:bg-green-50 text-sm"
+                    >
+                        {showMobileFilters ? 'Hide Filters' : 'Filter Search'}
+                    </Button>
+                </div>
+
                 {/* Filters Sidebar */}
-                <aside className="w-full md:w-64 bg-white p-6 rounded-xl shadow-sm border h-fit sticky top-4">
-                    <h2 className="font-bold text-xl mb-6 text-gray-800">Filter Search</h2>
+                <aside className={`${showMobileFilters ? 'block' : 'hidden'} md:block w-full md:w-64 bg-white p-5 sm:p-6 rounded-xl shadow-sm border h-fit sticky top-20 z-20`}>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="font-bold text-xl text-gray-800">Filter Search</h2>
+                        {showMobileFilters && (
+                            <button
+                                type="button"
+                                onClick={() => setShowMobileFilters(false)}
+                                className="md:hidden text-xs text-gray-500 hover:text-gray-800 font-semibold uppercase tracking-wider"
+                            >
+                                Close
+                            </button>
+                        )}
+                    </div>
                     <div className="space-y-5">
                         <div>
                             <label className="text-sm font-medium text-gray-700 block mb-1">City / Location</label>
@@ -165,7 +193,13 @@ export default function Properties() {
                                 <option value="price-desc">Price: High to Low</option>
                             </select>
                         </div>
-                        <Button onClick={handleApplyFilters} className="w-full bg-green-700 hover:bg-green-800 py-6 text-base font-semibold mt-2">
+                        <Button
+                            onClick={() => {
+                                handleApplyFilters();
+                                setShowMobileFilters(false);
+                            }}
+                            className="w-full bg-green-700 hover:bg-green-800 py-3 text-sm font-semibold mt-2 cursor-pointer"
+                        >
                             Apply Filters
                         </Button>
                     </div>
@@ -173,7 +207,7 @@ export default function Properties() {
 
                 {/* Properties Grid */}
                 <main className="flex-1">
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="hidden md:flex justify-between items-center mb-6">
                         <h1 className="text-2xl font-bold text-gray-900">
                             {properties.length} Properties Found
                         </h1>

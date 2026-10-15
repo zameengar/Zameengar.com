@@ -6,6 +6,8 @@ import { AdminLayout } from './components/layout/AdminLayout';
 
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 import Home from './pages/Home';
 import Properties from './pages/Properties';
 import PropertyDetails from './pages/PropertyDetails';
@@ -49,11 +51,13 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Guest-Only Authentication Routes (Redirect to dashboard if logged in) */}
           <Route element={<PublicLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/admin/login" element={<AdminLogin />} />
           </Route>
 
