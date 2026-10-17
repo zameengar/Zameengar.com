@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Header } from '../components/layout/Header';
 import { Button } from '../components/ui/button';
-import { MapPin, Home as HomeIcon, CheckCircle2, Flag, CheckSquare, XSquare, Heart, Edit, Trash, Phone, MessageCircle, X, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react';
+import { MapPin, Home as HomeIcon, CheckCircle2, Flag, CheckSquare, XSquare, Heart, Edit, Trash, Phone, MessageCircle, X, ChevronLeft, ChevronRight, ImageIcon, Share2, Copy, Check } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import SEO from '../components/SEO';
@@ -20,6 +20,7 @@ export default function PropertyDetails() {
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [savingFav, setSavingFav] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const [formName, setFormName] = useState('');
     const [formPhone, setFormPhone] = useState('');
@@ -217,6 +218,46 @@ export default function PropertyDetails() {
                                 </Button>
                             </div>
 
+                            {/* Share on WhatsApp & Facebook */}
+                            <div className="flex flex-wrap items-center gap-2 justify-end mb-4">
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mr-1 flex items-center gap-1">
+                                    <Share2 className="w-3.5 h-3.5" /> Share:
+                                </span>
+                                <a
+                                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this property on Zameengar: ${property.title}\nPKR ${property.price.toLocaleString()} in ${property.city}\n${window.location.href}`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20ba59] rounded-lg shadow-sm transition"
+                                >
+                                    <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
+                                </a>
+                                <a
+                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-[#1877F2] hover:bg-[#166fe5] rounded-lg shadow-sm transition"
+                                >
+                                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                    Facebook
+                                </a>
+                                <button
+                                    onClick={() => {
+                                        if (navigator.clipboard) {
+                                            navigator.clipboard.writeText(window.location.href);
+                                            setCopied(true);
+                                            setTimeout(() => setCopied(false), 2000);
+                                        }
+                                    }}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg shadow-sm transition cursor-pointer"
+                                    title="Copy link to clipboard"
+                                >
+                                    {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                                    {copied ? 'Copied!' : 'Copy Link'}
+                                </button>
+                            </div>
+
                             <div className="flex gap-4 items-center justify-end">
                                 <button onClick={() => setShowReport(true)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-800 transition">
                                     <Flag className="w-4 h-4" /> Report
@@ -412,7 +453,12 @@ export default function PropertyDetails() {
                                                 <a href={"tel:" + owner.phone} className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition text-sm">
                                                     <Phone className="w-4 h-4" /> Call
                                                 </a>
-                                                <a href={"https://wa.me/" + owner.phone.replace(/[^0-9]/g, '') + "?text=" + encodeURIComponent("Hi, I am interested in your property: " + property.title)} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition text-sm">
+                                                <a
+                                                    href={"https://wa.me/" + owner.phone.replace(/[^0-9]/g, '') + "?text=" + encodeURIComponent(`Hi, I am interested in your property on Zameengar:\n*${property.title}*\nPrice: PKR ${property.price.toLocaleString()}\nLink: ${window.location.href}`)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition text-sm"
+                                                >
                                                     <MessageCircle className="w-4 h-4" /> WhatsApp
                                                 </a>
                                             </div>
