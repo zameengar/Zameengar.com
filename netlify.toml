@@ -2,7 +2,12 @@
   command = "npm run build"
   publish = "dist"
 
+[[edge_functions]]
+  function = "property-og"
+  path = "/properties/*"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
